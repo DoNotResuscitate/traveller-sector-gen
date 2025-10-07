@@ -1,6 +1,6 @@
 # Traveller RPG Sub-Sector Generator
 
-A Python-based command-line tool for generating Traveller RPG sub-sectors following the official Traveller Core Rulebook rules. Outputs data in the legacy-sec-format compatible with [TravellerMap.com](https://travellermap.com). Includes a poster generator to create beautiful map visualizations.
+A Python-based command-line tool for generating Traveller RPG sub-sectors following the official Traveller Core Rulebook rules. Outputs data in the legacy-sec-format compatible with [TravellerMap.com](https://travellermap.com). Includes a poster generator to create beautiful map visualizations and an explainer tool to translate UWP codes into plain language.
 
 ## Features
 
@@ -18,6 +18,7 @@ A Python-based command-line tool for generating Traveller RPG sub-sectors follow
 - **Customizable**: Options for density, allegiance, and random naming
 - **Reproducible**: Optional seed for generating the same sub-sector
 - **Poster Generation**: Create beautiful PDF/SVG/PNG maps using the TravellerMap API
+- **World Explanations**: Translate technical UWP codes into human-readable descriptions
 
 ## Installation
 
@@ -125,6 +126,33 @@ python3 generate_poster.py \
   example_subsector.md my_poster.svg
 ```
 
+### World Explanations
+
+After generating a sub-sector, create a human-readable guide explaining each world:
+
+```bash
+# Generate explanations for a subsector
+python3 explain_subsector.py example_subsector.md subsector_guide.md
+```
+
+This creates a markdown file with each world as a heading, translating the technical UWP codes (starport, size, atmosphere, etc.) into plain English descriptions based on the Traveller Core Rulebook.
+
+**Example output:**
+```markdown
+# Gazulini
+**Location:** 0109 | **UWP:** A7A65A8-9
+
+Gazulini is a world with a 11,200km diameter (0.9G), and a population of
+500 thousand. The world has a standard atmosphere but tainted, requiring
+filter, and is a large ocean covering roughly half the surface (46-55% water).
+The population is governed by a charismatic dictator with overwhelming support,
+with high law - all weapons including blades banned...
+```
+
+The population is calculated using the UWP population code and the PBG multiplier
+(e.g., population code 5 = hundreds of thousands × PBG multiplier 5 = 500 thousand).
+```
+
 ## Command-Line Options
 
 ### Sub-Sector Generator
@@ -170,6 +198,15 @@ M N O P
 ```
 
 The generator creates subsectors with coordinates 01-08 x 01-10, which is always Subsector A.
+
+### World Explainer
+
+| Option | Description |
+|--------|-------------|
+| `input_file` | Input subsector file in SEC format (required) |
+| `output_file` | Output markdown file with explanations (required) |
+
+The explainer has no additional options - it simply translates the UWP codes into readable text.
 
 #### Available Styles
 
@@ -239,7 +276,7 @@ The generator automatically assigns trade codes based on world characteristics:
 
 ## Examples
 
-### Complete Workflow: Generate Sub-Sector and Poster
+### Complete Workflow: Generate Sub-Sector, Poster, and Guide
 
 ```bash
 # 1. Generate subsector H (Spinward Marches style)
@@ -253,16 +290,24 @@ python3 traveller_subsector_gen.py \
   --seed 42 \
   --output mora_subsector.md
 
-# 2. Activate virtual environment
-source venv/bin/activate
+# 2. Generate human-readable world guide
+python3 explain_subsector.py \
+  mora_subsector.md \
+  mora_guide.md
 
-# 3. Generate poster (subsector auto-detected as H)
+# 3. Activate virtual environment and generate poster
+source venv/bin/activate
 python3 generate_poster.py \
   --scale 128 \
   --style poster \
   --format pdf \
   mora_subsector.md mora_poster.pdf
 ```
+
+Now you have three files:
+- `mora_subsector.md` - Technical data in SEC format
+- `mora_guide.md` - Human-readable world descriptions
+- `mora_poster.pdf` - Visual map of the subsector
 
 ### Generate a dense Imperial sub-sector
 
@@ -319,6 +364,25 @@ The generator follows the Traveller Core Rulebook rules:
 10. **Bases**: Based on starport class
 11. **Gas Giants**: Roll 10+ for none present
 
+## Summary
+
+This toolkit provides three complementary tools:
+
+1. **`traveller_subsector_gen.py`** - Generate random subsectors with UWP data
+   - No dependencies, pure Python
+   - Outputs SEC format compatible with TravellerMap
+   - Supports all 16 subsectors (A-P) in a sector
+
+2. **`generate_poster.py`** - Create visual maps using TravellerMap API
+   - Requires: Python virtual environment with `requests`
+   - Outputs: PDF, SVG, or PNG
+   - Multiple visual styles (poster, terminal, print, etc.)
+
+3. **`explain_subsector.py`** - Translate technical codes into plain English
+   - No dependencies, pure Python
+   - Creates readable world guides
+   - Based on official Traveller rulebook descriptions
+
 ## License
 
 This generator is a fan-created tool for the Traveller RPG system. Traveller is a registered trademark of Far Future Enterprises.
@@ -326,4 +390,5 @@ This generator is a fan-created tool for the Traveller RPG system. Traveller is 
 ## References
 
 - [TravellerMap.com File Formats](https://travellermap.com/doc/fileformats)
+- [TravellerMap.com API](https://travellermap.com/doc/api)
 - Traveller Core Rulebook Update 2022

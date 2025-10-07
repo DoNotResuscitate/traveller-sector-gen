@@ -7,7 +7,7 @@ Outputs in legacy-sec-format compatible with travellermap.com
 
 import random
 import argparse
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 
 
 def roll_dice(num_dice: int, modifier: int = 0) -> int:
