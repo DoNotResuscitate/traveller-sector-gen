@@ -190,6 +190,9 @@ class World:
 
         self.tech_level = max(0, tl)
 
+        if self.tech_level > 15:
+            self.tech_level = 15
+
     def generate_bases(self):
         """Generate naval and scout bases."""
         base_chance = {
