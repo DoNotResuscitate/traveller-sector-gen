@@ -96,7 +96,7 @@ class World:
 
         # Gas Giants: Roll 10+ for NO gas giant
         if roll_dice(2) < 10:
-            self.gas_giants = random.randint(1, 3)
+            self.gas_giants = random.randint(1, 6)
 
         # Planetoid Belts
         self.planetoid_belts = max(0, roll_dice(1, -3))
@@ -302,7 +302,8 @@ class World:
         # Amber zone conditions
         if (self.atmosphere >= 10 or self.government in [0, 7, 10] or
             self.law_level in [0] or self.law_level >= 9):
-                self.travel_zone = 'A'
+                if roll_dice(2) >= 9: # ~28% chance of amber zone
+                    self.travel_zone = 'A'
 
         # Red zones are rare, at referee discretion
         if roll_dice(2) >= 13:  # Very rare
