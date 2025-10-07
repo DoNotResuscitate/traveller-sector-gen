@@ -337,13 +337,13 @@ class World:
     def to_sec_format(self) -> str:
         """Format world data in legacy SEC format."""
         # Fixed-width columns for proper alignment
-        name = self.name[:13].ljust(13)
+        name = self.name[:25].ljust(25)
         hex_loc = self.hex_loc.ljust(4)
         uwp = self.get_uwp().ljust(9)
         bases = self.get_bases()  # Single character
 
-        # Trade codes - maximum 15 characters
-        trade = ' '.join(self.trade_codes).ljust(15)
+        # Trade codes - maximum 25 characters
+        trade = ' '.join(self.trade_codes).ljust(25)
 
         zone = self.travel_zone if self.travel_zone else ' '
         pbg = self.get_pbg()  # 3 characters
@@ -417,9 +417,9 @@ class SubSector:
         output = []
         output.append(f"@SUB_SECTOR: {self.name} SECTOR: {self.sector_name}")
         output.append("#")
-        output.append("#--------1---------2---------3---------4---------5-------")
-        output.append("#PlanetName   Loc. UWP Code   B   Notes         Z  PBG Al")
-        output.append("#----------   ---- ---------  - --------------- -  --- --")
+        output.append("#1------------------------2----3----------4-5-------------------------6--7---8-")
+        output.append("#PlanetName               Loc. UWP Code   B Notes                     Z  PBG Al")
+        output.append("#------------------------ ---- ---------  - ------------------------- -  --- --")
 
         # Sort worlds by hex location
         for world in sorted(self.worlds, key=lambda w: w.hex_loc):
