@@ -57,7 +57,7 @@ HYDROGRAPHICS_DESCRIPTIONS = {
     '0': 'desert world (0-5% water)',
     '1': 'dry world (6-15% water)',
     '2': 'world with few small seas (16-25% water)',
-    '3': 'world withs mall seas and oceans (26-35% water)',
+    '3': 'world with small seas and oceans (26-35% water)',
     '4': 'wet world (36-45% water)',
     '5': 'world with large ocean covering roughly half the surface (46-55% water)',
     '6': 'world with large oceans (56-65% water)',
