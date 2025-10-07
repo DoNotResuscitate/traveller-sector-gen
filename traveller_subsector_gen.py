@@ -163,13 +163,17 @@ class World:
             tl += 1
 
         # Hydrographics modifiers
-        if self.hydrographics == 9:
+        if self.hydrographics == 0:
+            tl += 1
+        elif self.hydrographics == 9:
             tl += 1
         elif self.hydrographics == 10:
             tl += 2
 
         # Population modifiers
         if self.population >= 1 and self.population <= 5:
+            tl += 1
+        elif self.population == 8:
             tl += 1
         elif self.population == 9:
             tl += 2
@@ -288,7 +292,7 @@ class World:
             codes.append('Va')
 
         # Water World
-        if self.hydrographics == 10:
+        if (((self.atmosphere >= 3 and self.atmosphere <= 9) or self.atmosphere >= 13) and self.hydrographics >= 10):
             codes.append('Wa')
 
         self.trade_codes = codes
@@ -298,7 +302,6 @@ class World:
         # Amber zone conditions
         if (self.atmosphere >= 10 or self.government in [0, 7, 10] or
             self.law_level in [0] or self.law_level >= 9):
-            if roll_dice(2) >= 11:  # 8% chance
                 self.travel_zone = 'A'
 
         # Red zones are rare, at referee discretion
@@ -346,7 +349,7 @@ class World:
         pbg = self.get_pbg()  # 3 characters
         allegiance = self.allegiance  # 2 characters
 
-        return f"{name} {hex_loc} {uwp}  {bases}  {trade} {zone} {pbg} {allegiance}"
+        return f"{name} {hex_loc} {uwp}  {bases} {trade} {zone}  {pbg} {allegiance}"
 
 
 class SubSector:
