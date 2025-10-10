@@ -370,12 +370,12 @@ def explain_world(world: Dict) -> str:
                 trade_descs.append(TRADE_CODE_DESCRIPTIONS[code])
 
         if trade_descs:
-            desc_parts.append(f"Notable characteristics: {', '.join(trade_descs)}.")
+            desc_parts.append(f"\n**Notable characteristics:** {', '.join(trade_descs)}.")
 
     # Travel zone
     zone_desc = TRAVEL_ZONE_DESCRIPTIONS.get(world['zone'], 'safe for travel')
     if world['zone'] in ['A', 'R']:
-        desc_parts.append(f"**Travel Advisory:** {zone_desc}.")
+        desc_parts.append(f"\n**Travel Advisory:** {zone_desc}.")
 
     # Combine all parts
     lines.append(' '.join(desc_parts))
