@@ -3,3 +3,4 @@
 venv/
 .claude/
 *_guide.md
+*.svg
