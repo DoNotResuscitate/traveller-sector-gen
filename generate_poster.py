@@ -35,20 +35,25 @@ def determine_subsector(sector_data: str) -> str:
 
     Each subsector is 8x10 hexes.
     """
-    # Parse hex coordinates from the data
+    # Parse hex coordinates from the data using fixed-width columns
+    # Format: Name (25 chars) + space + Hex (4 chars) + ...
     hex_coords = []
     for line in sector_data.split('\n'):
         if line.startswith('#') or line.startswith('@') or not line.strip():
             continue
 
-        # Extract hex location (format: XXYY where XX=01-32, YY=01-40)
-        parts = line.split()
-        if len(parts) >= 2:
-            hex_loc = parts[1]
-            if len(hex_loc) == 4 and hex_loc.isdigit():
-                x = int(hex_loc[:2])
-                y = int(hex_loc[2:])
-                hex_coords.append((x, y))
+        # Require minimum length for valid world line
+        if len(line) < 30:
+            continue
+
+        # Extract hex location using fixed-width parsing
+        # Hex location is at positions 26-29 (4 characters)
+        hex_loc = line[26:30].strip()
+
+        if len(hex_loc) == 4 and hex_loc.isdigit():
+            x = int(hex_loc[:2])
+            y = int(hex_loc[2:])
+            hex_coords.append((x, y))
 
     if not hex_coords:
         # Default to subsector A if no valid coordinates found

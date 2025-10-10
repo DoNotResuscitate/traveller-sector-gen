@@ -104,14 +104,14 @@ GOVERNMENT_DESCRIPTIONS = {
 
 LAW_LEVEL_DESCRIPTIONS = {
     '0': 'no law - heavy weapons recommended',
-    '1': 'low law - WMD and poison gas banned',
-    '2': 'low law - portable energy weapons banned',
-    '3': 'moderate law - military weapons banned',
-    '4': 'moderate law - light assault weapons banned',
-    '5': 'moderate law - personal concealable weapons banned',
+    '1': 'low law - WMD and poison gas banned, battle dress banned',
+    '2': 'low law - portable energy weapons banned, combat armor banned',
+    '3': 'moderate law - military weapons banned, flak armor banned',
+    '4': 'moderate law - light assault weapons banned, cloth armor banned',
+    '5': 'moderate law - personal concealable weapons banned, mesh armor banned',
     '6': 'high law - all firearms except shotguns banned',
     '7': 'high law - all firearms banned',
-    '8': 'high law - all weapons including blades banned',
+    '8': 'high law - all weapons including blades banned, all visible armor banned',
     '9': 'extreme law - all weapons and armor banned',
     'A': 'totalitarian law - all weapons and armor banned'
 }
@@ -237,7 +237,14 @@ def format_population(pop_code: str, pbg: str) -> str:
 
 
 def parse_sec_file(filepath: str) -> List[Dict]:
-    """Parse a SEC format file and extract world data."""
+    """
+    Parse a SEC format file and extract world data using fixed-width columns.
+
+    Format:
+    Name (25 chars) + space + Hex (4 chars) + space + UWP (9 chars) +
+    2 spaces + Base (1 char) + space + Trade codes (25 chars) + space +
+    Zone (1 char) + 2 spaces + PBG (3 chars) + space + Allegiance (2 chars)
+    """
     worlds = []
 
     try:
@@ -247,42 +254,34 @@ def parse_sec_file(filepath: str) -> List[Dict]:
                 if line.startswith('#') or line.startswith('@') or not line.strip():
                     continue
 
-                parts = line.split()
-                if len(parts) < 6:
+                # Require minimum length for valid world line
+                if len(line) < 40:
                     continue
 
-                # Extract components
-                name = parts[0]
-                hex_loc = parts[1]
-                uwp = parts[2]
+                # Fixed-width parsing
+                name = line[0:25].strip()
+                hex_loc = line[26:30].strip()
+                uwp = line[31:40].strip()
 
-                # Find base code (single character after UWP)
-                base = parts[3] if len(parts) > 3 else ' '
+                # Validate we have at least name, hex, and UWP
+                if not name or not hex_loc or not uwp:
+                    continue
 
-                # Trade codes are everything between base and zone
-                # Find where zone starts (single character near the end)
-                trade_codes = []
-                zone = ' '
-                pbg = ''
-                allegiance = ''
+                # Base is at position 42 (after 2 spaces)
+                base = line[42] if len(line) > 42 else ' '
 
-                # Parse remaining parts
-                if len(parts) >= 4:
-                    # Trade codes start at index 4, continue until we find PBG (3 digits)
-                    for i in range(4, len(parts)):
-                        part = parts[i]
-                        if len(part) == 3 and part.isdigit():
-                            # Found PBG
-                            pbg = part
-                            if i + 1 < len(parts):
-                                allegiance = parts[i + 1]
-                            break
-                        elif len(part) == 1 and part in 'AR':
-                            # Found travel zone
-                            zone = part
-                        else:
-                            # Trade code
-                            trade_codes.append(part)
+                # Trade codes section: 25 chars starting at position 44
+                trade_section = line[44:69].strip() if len(line) > 44 else ''
+                trade_codes = trade_section.split() if trade_section else []
+
+                # Zone at position 70
+                zone = line[70] if len(line) > 70 else ' '
+
+                # PBG at position 73-75 (after 2 spaces)
+                pbg = line[73:76].strip() if len(line) > 73 else ''
+
+                # Allegiance at position 77-78 (after space)
+                allegiance = line[77:79].strip() if len(line) > 77 else ''
 
                 world = {
                     'name': name,
