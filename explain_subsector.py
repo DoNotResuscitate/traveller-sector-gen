@@ -148,7 +148,7 @@ TRADE_CODE_DESCRIPTIONS = {
     'Ic': 'ice-capped world',
     'In': 'industrial world',
     'Lo': 'low population',
-    'Lt': 'low tech - pre-industrial',
+    'Lt': 'low tech - pre-industrial, no advanced goods',
     'Na': 'non-agricultural',
     'Ni': 'non-industrial',
     'Po': 'poor - lacking resources',
@@ -370,12 +370,12 @@ def explain_world(world: Dict) -> str:
                 trade_descs.append(TRADE_CODE_DESCRIPTIONS[code])
 
         if trade_descs:
-            desc_parts.append(f"\n**Notable characteristics:** {', '.join(trade_descs)}.")
+            desc_parts.append(f"\n\n**Notable characteristics:** {', '.join(trade_descs)}.")
 
     # Travel zone
     zone_desc = TRAVEL_ZONE_DESCRIPTIONS.get(world['zone'], 'safe for travel')
     if world['zone'] in ['A', 'R']:
-        desc_parts.append(f"\n**Travel Advisory:** {zone_desc}.")
+        desc_parts.append(f"\n\n**Travel Advisory:** {zone_desc}.")
 
     # Combine all parts
     lines.append(' '.join(desc_parts))
