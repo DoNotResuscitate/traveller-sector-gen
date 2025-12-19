@@ -151,7 +151,6 @@ with high law - all weapons including blades banned...
 
 The population is calculated using the UWP population code and the PBG multiplier
 (e.g., population code 5 = hundreds of thousands × PBG multiplier 5 = 500 thousand).
-```
 
 ## Command-Line Options
 
@@ -169,13 +168,13 @@ The population is calculated using the UWP population code and the PBG multiplie
 | `--seed` | Random seed for reproducibility | Random |
 
 **Subsector Positioning**: Each subsector occupies a specific position in the 4x4 sector grid, affecting hex coordinates:
-
 ```
 A(01-08,01-10)  B(09-16,01-10)  C(17-24,01-10)  D(25-32,01-10)
 E(01-08,11-20)  F(09-16,11-20)  G(17-24,11-20)  H(25-32,11-20)
 I(01-08,21-30)  J(09-16,21-30)  K(17-24,21-30)  L(25-32,21-30)
 M(01-08,31-40)  N(09-16,31-40)  O(17-24,31-40)  P(25-32,31-40)
 ```
+The generator creates subsectors with coordinates 01-08 x 01-10, which is always Subsector A, by default.
 
 ### Poster Generator
 
@@ -197,17 +196,6 @@ I J K L
 M N O P
 ```
 
-The generator creates subsectors with coordinates 01-08 x 01-10, which is always Subsector A.
-
-### World Explainer
-
-| Option | Description |
-|--------|-------------|
-| `input_file` | Input subsector file in SEC format (required) |
-| `output_file` | Output markdown file with explanations (required) |
-
-The explainer has no additional options - it simply translates the UWP codes into readable text.
-
 #### Available Styles
 
 - **poster**: Color-on-black style (recommended for black background)
@@ -218,6 +206,15 @@ The explainer has no additional options - it simply translates the UWP codes int
 - **draft**: Simple draft style
 - **FASA**: FASA-style rendering
 - **mongoose**: Mongoose Publishing style
+
+### World Explainer
+
+| Option | Description |
+|--------|-------------|
+| `input_file` | Input subsector file in SEC format (required) |
+| `output_file` | Output markdown file with explanations (required) |
+
+The explainer has no additional options - it simply translates the UWP codes into readable text.
 
 ## Output Format
 
@@ -385,7 +382,7 @@ This toolkit provides three complementary tools:
 
 ## License
 
-This generator is a fan-created tool for the Traveller RPG system. Traveller is a registered trademark of Far Future Enterprises.
+This generator is a fan-created tool for the Traveller RPG system. The Traveller game in all forms is owned by Mongoose Publishing. Copyright 1977 – 2024 Mongoose Publishing. Traveller is a registered trademark of Mongoose Publishing. Mongoose Publishing permits web sites and fanzines for this game, provided it contains this notice, that Mongoose Publishing is notified, and subject to a withdrawal of permission on 90 days notice. The contents of this site are for personal, non-commercial use only. Any use of Mongoose Publishing’s copyrighted material or trademarks anywhere on this web site and its files should not be viewed as a challenge to those copyrights or trademarks. In addition, any program/articles/file on this site cannot be republished or distributed without the consent of the author who contributed it. 
 
 ## References
 
