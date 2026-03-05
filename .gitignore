@@ -1,6 +1,6 @@
 *.pdf
 *_subsector.md
-venv/
+.venv/
 .claude/
 *_guide.md
 *.svg
